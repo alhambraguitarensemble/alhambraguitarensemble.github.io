@@ -155,20 +155,6 @@
     <h1>알함브라 기타 앙상블</h1>
   </header>
 
-  <div class="visit-badge">
-    <div class="title">방문자 통계</div>
-    <div class="stats">
-      <div class="stat-item">
-        <div class="stat-label">이번 달</div>
-        <div class="stat-value" id="visit-month-count">0</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-label">오늘</div>
-        <div class="stat-value" id="visit-today-count">0</div>
-      </div>
-    </div>
-  </div>
-
   <div class="container">
     <h2>소개</h2>
     <p>알함브라 기타 앙상블은 성남, 분당을 중심으로 활동하는 경기/서울권역 클래식 기타 합주단입니다.</p>
@@ -199,40 +185,57 @@
     <p><a href="https://www.youtube.com/@alhambraguitarensemble1703" target="_blank">알함브라 기타 앙상블 유튜브 바로가기</a></p>
   </div>
 
+  <div class="visit-badge">
+    <div class="title">방문자 통계</div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-label">이번 달</div>
+        <div class="stat-value" id="visit-month-count">0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">오늘</div>
+        <div class="stat-value" id="visit-today-count">0</div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <p>#성남기타앙상블 #분당기타앙상블 #성남기타합주단 #분당기타합주단 #성남기타동호회 #분당기타동호회 #성남기타 #분당기타  #기타동호회 #클래식기타 #기타합주단 #기타앙상블</p>
     &copy; 2025 알함브라 기타 앙상블. All rights reserved.
   </footer>
 
   <script>
-    // 월별/일별 방문 카운터 (localStorage)
+    // 서버 DB 방문 카운터
     document.addEventListener('DOMContentLoaded', function() {
-      try {
-        var now = new Date();
-        var year = now.getFullYear();
-        var month = now.getMonth() + 1;
-        var day = now.getDate();
-        
-        // 월별 키 (YYYY-MM)
-        var monthKey = 'siteVisits_' + year + '-' + String(month).padStart(2, '0');
-        var monthCount = parseInt(localStorage.getItem(monthKey) || '0', 10) || 0;
-        localStorage.setItem(monthKey, String(monthCount + 1));
-        
-        // 일별 키 (YYYY-MM-DD)
-        var dayKey = 'siteVisits_day_' + year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
-        var dayCount = parseInt(localStorage.getItem(dayKey) || '0', 10) || 0;
-        localStorage.setItem(dayKey, String(dayCount + 1));
-        
-        // 화면 업데이트
+      // 방문 카운트 증가 요청
+      fetch('visit_counter.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'increment'
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // 화면 업데이트
+          var monthEl = document.getElementById('visit-month-count');
+          var dayEl = document.getElementById('visit-today-count');
+          
+          if (monthEl) monthEl.textContent = String(data.monthCount);
+          if (dayEl) dayEl.textContent = String(data.dayCount);
+        }
+      })
+      .catch(error => {
+        console.log('방문 카운터 로드 실패:', error);
+        // 실패 시 기본값 표시
         var monthEl = document.getElementById('visit-month-count');
         var dayEl = document.getElementById('visit-today-count');
-        
-        if (monthEl) monthEl.textContent = String(monthCount + 1);
-        if (dayEl) dayEl.textContent = String(dayCount + 1);
-        
-      } catch (e) {
-        // 사생활 보호 모드 등 저장 실패는 무시
-      }
+        if (monthEl) monthEl.textContent = '0';
+        if (dayEl) dayEl.textContent = '0';
+      });
     });
   </script>
 </body>
