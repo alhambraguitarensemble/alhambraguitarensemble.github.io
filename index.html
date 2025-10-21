@@ -204,39 +204,7 @@
     &copy; 2025 알함브라 기타 앙상블. All rights reserved.
   </footer>
 
-  <script>
-    // 서버 DB 방문 카운터
-    document.addEventListener('DOMContentLoaded', function() {
-      // 방문 카운트 증가 요청
-      fetch('visit_counter.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          action: 'increment'
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          // 화면 업데이트
-          var monthEl = document.getElementById('visit-month-count');
-          var dayEl = document.getElementById('visit-today-count');
-          
-          if (monthEl) monthEl.textContent = String(data.monthCount);
-          if (dayEl) dayEl.textContent = String(data.dayCount);
-        }
-      })
-      .catch(error => {
-        console.log('방문 카운터 로드 실패:', error);
-        // 실패 시 기본값 표시
-        var monthEl = document.getElementById('visit-month-count');
-        var dayEl = document.getElementById('visit-today-count');
-        if (monthEl) monthEl.textContent = '0';
-        if (dayEl) dayEl.textContent = '0';
-      });
-    });
-  </script>
+
 </body>
 </html>
+
