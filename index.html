@@ -97,12 +97,77 @@
       }
     }
 
+    /* 테니스 점수판 스타일 방문자 카운터 */
+    .visit-badge {
+      max-width: 225px; /* 현재의 절반 */
+      margin: 20px auto;
+      padding: 10px;
+      background: #ffffff;
+      border: 3px solid #000000;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      text-align: center;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+    }
+    
+    .visit-badge .title {
+      font-size: 12px;
+      color: #000000;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    
+    .visit-badge .stats {
+      display: flex;
+      justify-content: space-around;
+      gap: 8px;
+    }
+    
+    .visit-badge .stat-item {
+      flex: 1;
+    }
+    
+    .visit-badge .stat-label {
+      font-size: 8px;
+      color: #666666;
+      margin-bottom: 2px;
+      text-transform: uppercase;
+    }
+    
+    .visit-badge .stat-value {
+      font-size: 14px;
+      color: #000000;
+      font-weight: 900;
+      background: #f0f0f0;
+      padding: 2px 6px;
+      border: 2px solid #000000;
+      border-radius: 3px;
+      min-width: 30px;
+      display: inline-block;
+    }
+
   </style>
 </head>
 <body>
   <header>
     <h1>알함브라 기타 앙상블</h1>
   </header>
+
+  <div class="visit-badge">
+    <div class="title">방문자 통계</div>
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-label">이번 달</div>
+        <div class="stat-value" id="visit-month-count">0</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-label">오늘</div>
+        <div class="stat-value" id="visit-today-count">0</div>
+      </div>
+    </div>
+  </div>
 
   <div class="container">
     <h2>소개</h2>
@@ -138,9 +203,37 @@
     <p>#성남기타앙상블 #분당기타앙상블 #성남기타합주단 #분당기타합주단 #성남기타동호회 #분당기타동호회 #성남기타 #분당기타  #기타동호회 #클래식기타 #기타합주단 #기타앙상블</p>
     &copy; 2025 알함브라 기타 앙상블. All rights reserved.
   </footer>
+
+  <script>
+    // 월별/일별 방문 카운터 (localStorage)
+    document.addEventListener('DOMContentLoaded', function() {
+      try {
+        var now = new Date();
+        var year = now.getFullYear();
+        var month = now.getMonth() + 1;
+        var day = now.getDate();
+        
+        // 월별 키 (YYYY-MM)
+        var monthKey = 'siteVisits_' + year + '-' + String(month).padStart(2, '0');
+        var monthCount = parseInt(localStorage.getItem(monthKey) || '0', 10) || 0;
+        localStorage.setItem(monthKey, String(monthCount + 1));
+        
+        // 일별 키 (YYYY-MM-DD)
+        var dayKey = 'siteVisits_day_' + year + '-' + String(month).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+        var dayCount = parseInt(localStorage.getItem(dayKey) || '0', 10) || 0;
+        localStorage.setItem(dayKey, String(dayCount + 1));
+        
+        // 화면 업데이트
+        var monthEl = document.getElementById('visit-month-count');
+        var dayEl = document.getElementById('visit-today-count');
+        
+        if (monthEl) monthEl.textContent = String(monthCount + 1);
+        if (dayEl) dayEl.textContent = String(dayCount + 1);
+        
+      } catch (e) {
+        // 사생활 보호 모드 등 저장 실패는 무시
+      }
+    });
+  </script>
 </body>
 </html>
-
-
-
-
