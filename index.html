@@ -142,6 +142,32 @@
 
     }
 
+    /* 연주회 소식(펼치기) */
+    .concert-toggle {
+      background: none;
+      border: 0;
+      padding: 0;
+      color: #0044cc;
+      cursor: pointer;
+      font-size: 1em;
+      font-family: 'Noto Serif KR', serif;
+    }
+
+    .concert-toggle:hover {
+      text-decoration: underline;
+    }
+
+    .concert-details {
+      margin: 6px 0 12px 0;
+      padding-left: 14px;
+      border-left: 3px solid rgba(140, 74, 50, 0.35);
+      color: #333;
+    }
+
+    .concert-details p {
+      margin: 2px 0;
+    }
+
 
 
     footer {
@@ -350,17 +376,18 @@
 
 
 
-     <h2>클래스 콘서트(26년1월17일) 개최</h2>
-
-    <p><a href="https://alhambraguitarensemble.github.io/alhambraguitarclecon" target="_blank">알함브라 기타 앙상블 26년 겨울 클래스 콘서트 안내 바로가기</a></p>
-
-
-
-
-
-    <h2>정기 연주회(25년11월16일) 개최</h2>
-
-    <p><a href="https://beeper9-source.github.io/alhambra_2511" target="_blank">알함브라 기타 앙상블 21회 정기연주회 안내 바로가기</a></p>
+    <h2>연주회 소식</h2>
+    <p>
+      <button type="button" class="concert-toggle" aria-expanded="false" aria-controls="concert-22-details">
+        22회 정기연주회(26년 11월21일) 개최
+      </button>
+    </p>
+    <div id="concert-22-details" class="concert-details" hidden>
+      <p>o 일시 : 26년 11월21일(토) 오후 4시</p>
+      <p>o 장소 : 서울 광림아트센터 장천홀</p>
+    </div>
+    <p><a href="https://alhambraguitarensemble.github.io/alhambraguitarclecon" target="_blank">클래스 콘서트(26년1월17일) 개최</a></p>
+    <p><a href="https://beeper9-source.github.io/alhambra_2511" target="_blank">21회 정기 연주회(25년11월16일) 개최</a></p>
 
 
 
@@ -394,9 +421,25 @@
 
   </footer>
 
+  <script>
+    // 연주회 소식 펼치기/접기
+    (function () {
+      const btn = document.querySelector('.concert-toggle[aria-controls="concert-22-details"]');
+      const panel = document.getElementById('concert-22-details');
+      if (!btn || !panel) return;
 
-
-
+      btn.addEventListener('click', function () {
+        const isOpen = !panel.hasAttribute('hidden');
+        if (isOpen) {
+          panel.setAttribute('hidden', '');
+          btn.setAttribute('aria-expanded', 'false');
+        } else {
+          panel.removeAttribute('hidden');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    })();
+  </script>
 
 </body>
 
