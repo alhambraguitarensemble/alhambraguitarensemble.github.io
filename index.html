@@ -393,7 +393,7 @@
       <p>o 장소 : 서울 광림아트센터 장천홀</p>
     </div>
      <p>
-      <button type="button" class="concert-toggle" aria-expanded="false" aria-controls="concert-22-details">
+      <button type="button" class="concert-toggle" aria-expanded="false" aria-controls="concert-summer-details">
         클래스 여름 콘스트 (26년 7월25일) 개최 <span class="hot-icon" aria-hidden="true">💥</span>
       </button>
     </p>
@@ -435,14 +435,14 @@
     &copy; 2025 알함브라 기타 앙상블. All rights reserved.
 
   </footer>
-
-  <script>
-    // 연주회 소식 펼치기/접기
-    (function () {
-      const btn = document.querySelector('.concert-toggle[aria-controls="concert-22-details"]');
-      const panel = document.getElementById('concert-22-details');
-      if (!btn || !panel) return;
-
+    
+<script>
+  // 연주회 소식 펼치기/접기
+  (function () {
+    document.querySelectorAll('.concert-toggle').forEach(function (btn) {
+      const panelId = btn.getAttribute('aria-controls');
+      const panel = panelId ? document.getElementById(panelId) : null;
+      if (!panel) return;
       btn.addEventListener('click', function () {
         const isOpen = !panel.hasAttribute('hidden');
         if (isOpen) {
@@ -453,9 +453,9 @@
           btn.setAttribute('aria-expanded', 'true');
         }
       });
-    })();
-  </script>
-
+    });
+  })();
+</script>
 </body>
 
 </html> 
